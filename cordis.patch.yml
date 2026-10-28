@@ -1,0 +1,29 @@
+# dsh-cpa-image profile bundle patch: image-aware model calls without touching
+# any provider route.
+#
+# This plugin registers NO provider. It listens on the `llm/stream` waterfall,
+# which runs above adapter selection, so every provider keeps its own adapter,
+# its own settings page entry, and its own credentials. The listener taps the
+# upstream HTTP response (the only place CPA's `delta.images` still exists),
+# turns those pictures into durable attachments, and appends them to the
+# assistant message. `gpt-image-*` models are short-circuited to
+# `/v1/images/generations`, which is the only endpoint CPA serves them on.
+#
+# `baseURL`/`apiKeyEnv` are used only by that images-endpoint path; chat calls
+# keep using whatever the provider itself is configured with.
+- insert:
+    - id: dsh-cpa-image
+      name: dsh-cpa-image
+      inject: [llm, attachments]
+      config:
+        baseURL: http://127.0.0.1:8317/v1
+        apiKeyEnv: CPA_API_KEY
+        # Empty = tap every host. Narrow to ["cpa.example.com"] if you would
+        # rather leave unrelated traffic alone.
+        hosts: []
+        imageModels:
+          - gpt-image-1.5
+          - gpt-image-2
+          - gpt-image-2.5
+          - gpt-image-2.5-flare
+          - gpt-image-2.5-sunburst

@@ -1,0 +1,21 @@
+# Dependencies (the profile links this package, it never vendors one)
+node_modules/
+
+# Output of scripts/live.mjs: generated pictures and raw SSE captures
+out/
+
+# Local-only verification overlay: it hard-codes absolute paths on this machine
+overlay-headless.yml
+
+# Never commit credentials; the plugin reads ~/.dsh/.credentials.yaml instead
+.env
+.env.*
+!.env.example
+*.credentials.yaml
+.credentials.yaml
+
+# Logs, OS and editor noise
+*.log
+.DS_Store
+.vscode/
+.idea/

@@ -1,0 +1,28 @@
+{
+  "name": "dsh-cpa-image",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Image-aware model calls for CPA (CLIProxyAPI) and other OpenAI-compatible upstreams: a llm/stream middleware that turns delta.images / message.images into durable assistant image blocks, without replacing any provider adapter.",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./wire": "./src/wire.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src",
+    "cordis.patch.yml",
+    "README.md",
+    "test"
+  ],
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "license": "MIT",
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}
