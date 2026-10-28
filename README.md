@@ -61,14 +61,33 @@ llm/stream 拦截器
 ## 安装
 
 ```bash
-./install.sh                             # 拷到 $DSH_HOME 的 profile 并写 bundle 清单
+dsh plugin --profile web add github:UKWI/dsh-cpa-image
 # 重启 dsh web
 ```
 
-`install.sh` 只负责 bundle 本身。**profile 的 `llm-pi-ai` 保持原样即可**——本插件不需要
-任何 provider 让位；如果你之前为了接管路由把 `providers` 清空过，恢复原配置即可。
+`dsh plugin` 转发给 profile 目录里的 pnpm：拉取包、装进 `node_modules`，并把声明了
+`dsh.bundle` 的包**自动追加到** `dsh.profile.bundles`。没有额外步骤，也不需要手工改清单。
 
-`./install.sh --dry-run` 只打印计划；`./install.sh --uninstall` 反向删除。
+本地开发时改成链接当前目录，改完重启即可生效：
+
+```bash
+dsh plugin --profile web add link:/path/to/dsh-cpa-image
+```
+
+卸载（同时会从 bundles 里摘掉）：
+
+```bash
+dsh plugin --profile web remove dsh-cpa-image
+```
+
+装完检查一次合成结果，确认 `dsh-cpa-image` 行在树里：
+
+```bash
+dsh --profile web --dump-config | grep -A3 dsh-cpa-image
+```
+
+**profile 的 `llm-pi-ai` 保持原样即可**——本插件不需要任何 provider 让位。如果你早先为了
+接管路由把它的 `providers` 清空过，恢复原配置即可。
 
 ## 配置
 
